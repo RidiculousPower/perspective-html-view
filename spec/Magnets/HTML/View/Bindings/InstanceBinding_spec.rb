@@ -7,7 +7,7 @@ describe ::Magnets::HTML::View::Bindings::InstanceBinding do
 
     class ::Magnets::HTML::View::Bindings::InstanceBinding::NodeView
       include ::Magnets::Bindings::Container
-      def to_html_node
+      def to_html_node( document_frame )
         return ::Nokogiri::XML::DocumentFragment.parse( '<div>to_html_node_content</div>' )
       end
     end
