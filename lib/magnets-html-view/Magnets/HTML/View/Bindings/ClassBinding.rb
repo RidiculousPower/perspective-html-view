@@ -1,6 +1,6 @@
 
 module ::Magnets::HTML::View::Bindings::ClassBinding
-  
+      
   #############################
   #  __validate_view_class__  #
   #############################

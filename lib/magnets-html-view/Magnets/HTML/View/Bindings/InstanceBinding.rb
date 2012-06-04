@@ -5,6 +5,10 @@ module ::Magnets::HTML::View::Bindings::InstanceBinding
 
   ccm = ::CascadingConfiguration::Methods
 
+  include ::CascadingConfiguration::Array
+  
+  attr_configuration_array  :__binding_order__
+
   ################
   #  css_id      #
   #  __css_id__  #
@@ -55,11 +59,11 @@ module ::Magnets::HTML::View::Bindings::InstanceBinding
 
 	alias_method :css_class, :__css_class__
 
-	######################
-  #  __render_value__  #
-  ######################
+	##################
+  #  to_html_node  #
+  ##################
   
-	def __render_value__( document_frame, current_value = __value__ )
+	def to_html_node( document_frame, current_value = __value__ )
 
 		html_node = nil
 
@@ -85,7 +89,7 @@ module ::Magnets::HTML::View::Bindings::InstanceBinding
 
     else
 
-      if render_value = super( current_value )
+      if render_value = __render_value__( current_value )
         html_node = ::Nokogiri::XML::Text.new( render_value, document_frame )
   		end
 	    	
@@ -94,7 +98,5 @@ module ::Magnets::HTML::View::Bindings::InstanceBinding
 		return html_node
 
 	end
-	
-	alias_method :render_value, :__render_value__
 
 end

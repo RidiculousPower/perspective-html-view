@@ -21,9 +21,9 @@ describe ::Magnets::HTML::View::Bindings::InstanceBinding do
 
   end
   
-	######################
-  #  __render_value__  #
-  ######################
+	##################
+  #  to_html_node  #
+  ##################
   
   it 'can render its view class and/or value' do
     
@@ -32,7 +32,7 @@ describe ::Magnets::HTML::View::Bindings::InstanceBinding do
     # with to_html_node
     class_binding = ::Magnets::Bindings::AttributeContainer::HTMLView::Text.new( :binding_name, ::Magnets::HTML::View::Bindings::InstanceBinding::NodeView )
     instance_binding = ::Magnets::Bindings::AttributeContainer::HTMLView::Text::InstanceBinding.new( class_binding )
-    node = instance_binding.__render_value__( mock_doc_frame )
+    node = instance_binding.to_html_node( mock_doc_frame )
     node.is_a?( ::Nokogiri::XML::DocumentFragment ).should == true
     node.children[ 0 ].name.should == 'div'
     node.children[ 0 ].content.should == 'to_html_node_content'
@@ -40,7 +40,7 @@ describe ::Magnets::HTML::View::Bindings::InstanceBinding do
     # with to_html_fragment
     class_binding = ::Magnets::Bindings::AttributeContainer::HTMLView::Text.new( :binding_name, ::Magnets::HTML::View::Bindings::InstanceBinding::FragmentView )
     instance_binding = ::Magnets::Bindings::AttributeContainer::HTMLView::Text::InstanceBinding.new( class_binding )
-    node = instance_binding.__render_value__( mock_doc_frame )
+    node = instance_binding.to_html_node( mock_doc_frame )
     node.is_a?( ::Nokogiri::XML::DocumentFragment ).should == true
     node.children[ 0 ].name.should == 'div'
     node.children[ 0 ].content.should == 'to_html_fragment_content'
@@ -49,7 +49,7 @@ describe ::Magnets::HTML::View::Bindings::InstanceBinding do
     class_binding = ::Magnets::Bindings::AttributeContainer::HTMLView::Text.new( :binding_name )
     instance_binding = ::Magnets::Bindings::AttributeContainer::HTMLView::Text::InstanceBinding.new( class_binding )
     instance_binding.__value__ = :some_value
-    node = instance_binding.__render_value__( mock_doc_frame )
+    node = instance_binding.to_html_node( mock_doc_frame )
     node.is_a?( ::Nokogiri::XML::Text ).should == true
     node.content.should == 'some_value'
     

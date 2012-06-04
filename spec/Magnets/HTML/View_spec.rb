@@ -58,6 +58,7 @@ describe ::Magnets::HTML::View do
     instance = ::Magnets::HTML::View::Mock.new
     instance.some_view = 'some value'
     instance.some_other_views = [ ' and another value', ' and some other value' ]
+    binding = instance.__binding__( :some_other_views )
     node = instance.to_html_node
     node.is_a?( ::Nokogiri::XML::Element ).should == true
     node.name.should == 'div'
@@ -75,9 +76,9 @@ describe ::Magnets::HTML::View do
     instance.some_other_views = [ ' and another value', ' and some other value' ]
     node = instance.to_html_fragment
     node.should == '<div class="Magnets::HTML::View::Mock">
-  <div class="Magnets::HTML::View::SimpleMock">some value</div>
-  <div class="Magnets::HTML::View::SimpleMock"> and another value</div>
-  <div class="Magnets::HTML::View::SimpleMock"> and some other value</div>
+  <div class="Magnets::HTML::View::SimpleMock" id="some_view">some value</div>
+  <div class="Magnets::HTML::View::SimpleMock" id="some_other_views"> and another value</div>
+  <div class="Magnets::HTML::View::SimpleMock" id="some_other_views2"> and some other value</div>
 </div>'
   end
 
@@ -90,7 +91,19 @@ describe ::Magnets::HTML::View do
     instance.some_view = 'some value'
     instance.some_other_views = [ ' and another value', ' and some other value' ]
     node = instance.to_html
-    node.should == "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n\t<head>\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n</head>\n\t<body>\n\t\t<div class=\"Magnets::HTML::View::Mock\">\n\t\t\t<div class=\"Magnets::HTML::View::SimpleMock\">some value</div>\n\t\t\t<div class=\"Magnets::HTML::View::SimpleMock\"> and another value</div>\n\t\t\t<div class=\"Magnets::HTML::View::SimpleMock\"> and some other value</div>\n\t\t</div>\n\t</body>\n</html>\n"
+    node.should == "<!DOCTYPE html>
+<html xmlns=\"http://www.w3.org/1999/xhtml\">
+\t<head>
+\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />
+</head>
+\t<body>
+\t\t<div class=\"Magnets::HTML::View::Mock\">
+\t\t\t<div class=\"Magnets::HTML::View::SimpleMock\" id=\"some_view\">some value</div>
+\t\t\t<div class=\"Magnets::HTML::View::SimpleMock\" id=\"some_other_views\"> and another value</div>
+\t\t\t<div class=\"Magnets::HTML::View::SimpleMock\" id=\"some_other_views2\"> and some other value</div>
+\t\t</div>
+\t</body>
+</html>\n"
   end
   
 end

@@ -71,13 +71,12 @@ module ::Magnets::HTML::View::ObjectInstance
 
 	###################################  Rendering to HTML  ##########################################
 
-  #################
-  #  to_html      #
-  #  __to_html__  #
-  #################
+  #############
+  #  to_html  #
+  #############
 
   # return properly formatted html frame string: doctype, html and all
-  def __to_html__
+  def to_html
     
     html_node = to_html_node
     
@@ -120,33 +119,32 @@ module ::Magnets::HTML::View::ObjectInstance
 
   end
   
-  alias_method :to_html, :__to_html__
+  ######################
+  #  to_html_fragment  #
+  ######################
 
-  ##########################
-  #  to_html_fragment      #
-  #  __to_html_fragment__  #
-  ##########################
-
-  def __to_html_fragment__
+  def to_html_fragment
     
     return to_html_node.to_s
 
   end
 
-  alias_method :to_html_fragment, :__to_html_fragment__
+  ##################
+  #  to_html_node  #
+  ##################
 
-  ######################
-  #  to_html_node      #
-  #  __to_html_node__  #
-  ######################
-
-  def __to_html_node__( document_frame = nil )
+  def to_html_node( document_frame = nil )
 
 		# we are rendering a Nokogiri XML node capable of producing XML or HTML
 		# this means we have to integrate data from object(s) to the view's bindings 
 		# to put the data in place
 
     if ! binding_order_declared_empty? and __binding_order__.empty?
+      puts 'self: ' + self.to_s
+      instance_binding_parent = ::CascadingConfiguration::Variable.ancestor( self, :__binding_order__ )
+      class_binding_parent = ::CascadingConfiguration::Variable.ancestor( instance_binding_parent, :__binding_order__ )
+      simplemock_parent = ::CascadingConfiguration::Variable.ancestor( class_binding_parent, :__binding_order__ )
+      puts 'simple: ' + instance_binding_parent.__binding_order__.to_s
       raise ::Magnets::Bindings::Exception::BindingOrderEmpty,
               'Binding order was empty. Declare binding order using :attr_order.'
     end
@@ -169,8 +167,6 @@ module ::Magnets::HTML::View::ObjectInstance
     return nodes_from_self 
     
   end
-
-  alias_method :to_html_node, :__to_html_node__
   
   ##################################################################################################
       private ######################################################################################
@@ -208,10 +204,10 @@ module ::Magnets::HTML::View::ObjectInstance
       container_node.document_frame = document_frame
       
       if css_class = __css_class__
-  		  container_node[ 'class' ] = css_class
+  		  container_node[ 'class' ] = css_class.to_s
       end
       if css_id = __css_id__
-        container_node[ 'id' ] = css_id
+        container_node[ 'id' ] = css_id.to_s
       end
       
     else
@@ -233,31 +229,45 @@ module ::Magnets::HTML::View::ObjectInstance
 		# Create our container node (self)
 		# This is most likely either a 'div' or a NodeSet, but could be anything.
     container_node = __initialize_container_node__( document_frame )
-    
+
 		__binding_order__.each do |this_binding_instance|
 
-		  if html_node = this_binding_instance.__render_value__( document_frame )
-
-		    case html_node
-		      
-  	      when ::Nokogiri::XML::NodeSet
-          
-            html_node.each do |this_html_node|
-    		      container_node << this_html_node
-  	        end
-	        
-          else
-
-    		    container_node << html_node
-		    
-		    end
-
-	    end
+	    __render_binding__( document_frame, container_node, this_binding_instance )
 	    
 		end
 		
     return container_node
     
 	end
+
+	########################
+  #  __render_binding__  #
+  ########################
+  
+	def __render_binding__( document_frame, container_node, binding_instance )
+
+    html_node = nil
+
+	  if html_node = binding_instance.to_html_node( document_frame )
+
+	    case html_node
+	      
+	      when ::Nokogiri::XML::NodeSet
+        
+          html_node.each do |this_html_node|
+  		      container_node << this_html_node
+	        end
+        
+        else
+
+  		    container_node << html_node
+	    
+	    end
+
+    end
+    
+    return html_node
+
+  end
   
 end
