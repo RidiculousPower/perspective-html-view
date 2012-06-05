@@ -1,63 +1,7 @@
 
 module ::Magnets::HTML::View::Bindings::InstanceBinding
 
-  include ::CascadingConfiguration::Setting
-
-  ccm = ::CascadingConfiguration::Methods
-
-  include ::CascadingConfiguration::Array
-  
-  attr_configuration_array  :__binding_order__
-
-  ################
-  #  css_id      #
-  #  __css_id__  #
-  ################
-  
-  attr_configuration  :__css_id__
-
-  ccm.alias_module_and_instance_methods( self, :css_id, :__css_id__ )
-	
-  def __css_id__
-    
-    css_id = nil
-    
-    unless css_id  = super
-      
-      css_id = __route_string__
-      
-    end
-    
-    return css_id
-    
-  end
-  
-  alias_method :css_id, :__css_id__
-	
-  ###################
-  #  css_class      #
-  #  __css_class__  #
-  ###################
-  
-  attr_configuration	:__css_class__
-
-  ccm.alias_module_and_instance_methods( self, :css_class, :__css_class__ )
-	
-  def __css_class__
-
-    css_class = nil
-    
-    unless css_class = super
-      
-      css_class = self.class.to_s
-      
-    end
-    
-    return css_class
-
-  end
-
-	alias_method :css_class, :__css_class__
+  include ::Magnets::HTML::View::Configuration
 
 	##################
   #  to_html_node  #

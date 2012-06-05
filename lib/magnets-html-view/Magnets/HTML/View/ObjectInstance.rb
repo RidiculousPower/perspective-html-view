@@ -1,6 +1,7 @@
 
 module ::Magnets::HTML::View::ObjectInstance
   
+  include ::Magnets::HTML::View::Configuration
   include ::Magnets::Abstract::View::ObjectInstance
   
   include ::CascadingConfiguration::Setting
@@ -17,57 +18,6 @@ module ::Magnets::HTML::View::ObjectInstance
   ccm.alias_module_and_instance_methods( self, :container_tag, :__container_tag__ )
 
   self.__container_tag__ = 'div'
-
-  ################
-  #  css_id      #
-  #  __css_id__  #
-  ################
-
-	attr_configuration  :__css_id__
-
-  ccm.alias_module_and_instance_methods( self, :css_id, :__css_id__ )
-  
-  def __css_id__
-    
-    css_id = nil
-    
-    unless css_id  = super
-      
-      css_id = __route_string__
-      
-    end
-    
-    return css_id
-    
-  end
-
-  alias_method :css_id, :__css_id__
-
-  ###################
-  #  css_class      #
-  #  __css_class__  #
-  ###################
-
-	attr_configuration	:__css_class__
-
-  ccm.alias_module_and_instance_methods( self, :css_class, :__css_class__ )
-
-  def __css_class__
-
-    css_class = nil
-    
-    unless css_class = super
-      
-      css_class = self.class.to_s
-      
-    end
-    
-    return css_class
-
-  end
-  
-  alias_method :css_class, :__css_class__
-	
 
 	###################################  Rendering to HTML  ##########################################
 
@@ -203,12 +153,7 @@ module ::Magnets::HTML::View::ObjectInstance
       # Record document frame in self-as-node
       container_node.document_frame = document_frame
       
-      if css_class = __css_class__
-  		  container_node[ 'class' ] = css_class.to_s
-      end
-      if css_id = __css_id__
-        container_node[ 'id' ] = css_id.to_s
-      end
+      __initialize_css_id_and_class__( container_node )
       
     else
 
@@ -217,6 +162,40 @@ module ::Magnets::HTML::View::ObjectInstance
     end
     
     return container_node
+    
+  end
+
+	#####################################
+  #  __initialize_css_id_and_class__  #
+  #####################################
+  
+  def __initialize_css_id_and_class__( container_node )
+    
+    if css_class = __css_class__
+
+		  container_node[ 'class' ] = css_class.to_s
+
+	  else
+	    
+	    unless css_class == false
+  		  container_node[ 'class' ] = self.class.to_s
+      end
+	    
+    end
+    
+    if css_id = __css_id__
+
+      container_node[ 'id' ] = css_id.to_s
+
+	  else
+	    
+	    unless css_id == false
+	      if route_string = __route_string__
+  		    container_node[ 'id' ] = route_string
+		    end
+      end
+
+    end
     
   end
   	

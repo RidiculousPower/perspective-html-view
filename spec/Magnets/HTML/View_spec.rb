@@ -77,7 +77,7 @@ describe ::Magnets::HTML::View do
     node = instance.to_html_fragment
     node.should == '<div class="Magnets::HTML::View::Mock">
   <div class="Magnets::HTML::View::SimpleMock" id="some_view">some value</div>
-  <div class="Magnets::HTML::View::SimpleMock" id="some_other_views"> and another value</div>
+  <div class="Magnets::HTML::View::SimpleMock" id="some_other_views1"> and another value</div>
   <div class="Magnets::HTML::View::SimpleMock" id="some_other_views2"> and some other value</div>
 </div>'
   end
@@ -99,7 +99,7 @@ describe ::Magnets::HTML::View do
 \t<body>
 \t\t<div class=\"Magnets::HTML::View::Mock\">
 \t\t\t<div class=\"Magnets::HTML::View::SimpleMock\" id=\"some_view\">some value</div>
-\t\t\t<div class=\"Magnets::HTML::View::SimpleMock\" id=\"some_other_views\"> and another value</div>
+\t\t\t<div class=\"Magnets::HTML::View::SimpleMock\" id=\"some_other_views1\"> and another value</div>
 \t\t\t<div class=\"Magnets::HTML::View::SimpleMock\" id=\"some_other_views2\"> and some other value</div>
 \t\t</div>
 \t</body>

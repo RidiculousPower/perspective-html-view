@@ -19,6 +19,8 @@ files = [
 
   'Attributes/View',
   
+  'Configuration',
+  
   'Bindings/ClassBinding',
   'Bindings/InstanceBinding',
   'Bindings/MultiContainerProxy',
