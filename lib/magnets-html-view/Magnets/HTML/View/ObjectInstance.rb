@@ -205,14 +205,14 @@ module ::Magnets::HTML::View::ObjectInstance
   
 	def __render_binding_order__( document_frame )
 		    
+		render_value_valid?( true, @__view_rendering_empty__ )
+
 		# Create our container node (self)
 		# This is most likely either a 'div' or a NodeSet, but could be anything.
     container_node = __initialize_container_node__( document_frame )
 
 		__binding_order__.each do |this_binding_instance|
-
 	    __render_binding__( document_frame, container_node, this_binding_instance )
-	    
 		end
 		
     return container_node
