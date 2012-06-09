@@ -17,7 +17,7 @@ module ::Magnets::HTML::View::ObjectInstance
 
   ccm.alias_module_and_instance_methods( self, :container_tag, :__container_tag__ )
 
-  self.__container_tag__ = 'div'
+  self.__container_tag__ = :div
 
 	###################################  Rendering to HTML  ##########################################
 
@@ -73,9 +73,9 @@ module ::Magnets::HTML::View::ObjectInstance
   #  to_html_fragment  #
   ######################
 
-  def to_html_fragment
+  def to_html_fragment( view_rendering_empty = false )
     
-    return to_html_node.to_s
+    return to_html_node( nil, view_rendering_empty ).to_s
 
   end
 
@@ -83,18 +83,13 @@ module ::Magnets::HTML::View::ObjectInstance
   #  to_html_node  #
   ##################
 
-  def to_html_node( document_frame = nil )
+  def to_html_node( document_frame = nil, view_rendering_empty = false )
 
 		# we are rendering a Nokogiri XML node capable of producing XML or HTML
 		# this means we have to integrate data from object(s) to the view's bindings 
 		# to put the data in place
 
     if ! binding_order_declared_empty? and __binding_order__.empty?
-      puts 'self: ' + self.to_s
-      instance_binding_parent = ::CascadingConfiguration::Variable.ancestor( self, :__binding_order__ )
-      class_binding_parent = ::CascadingConfiguration::Variable.ancestor( instance_binding_parent, :__binding_order__ )
-      simplemock_parent = ::CascadingConfiguration::Variable.ancestor( class_binding_parent, :__binding_order__ )
-      puts 'simple: ' + instance_binding_parent.__binding_order__.to_s
       raise ::Magnets::Bindings::Exception::BindingOrderEmpty,
               'Binding order was empty. Declare binding order using :attr_order.'
     end
@@ -108,7 +103,7 @@ module ::Magnets::HTML::View::ObjectInstance
     
 		# if we have an attribute order defined that means we have child elements
 		# we have to render those child elements
-		nodes_from_self = __render_binding_order__( document_frame )
+		nodes_from_self = __render_binding_order__( document_frame, view_rendering_empty )
     
     if initialized_document_frame
       document_frame.root = nodes_from_self
@@ -148,7 +143,7 @@ module ::Magnets::HTML::View::ObjectInstance
     
     if container_tag = __container_tag__
 
-      container_node = ::Nokogiri::XML::Node.new( container_tag, document_frame )
+      container_node = ::Nokogiri::XML::Node.new( container_tag.to_s, document_frame )
     
       # Record document frame in self-as-node
       container_node.document_frame = document_frame
@@ -182,7 +177,7 @@ module ::Magnets::HTML::View::ObjectInstance
       end
 	    
     end
-    
+
     if css_id = __css_id__
 
       container_node[ 'id' ] = css_id.to_s
@@ -203,16 +198,19 @@ module ::Magnets::HTML::View::ObjectInstance
   #  __render_binding_order__  #
   ##############################
   
-	def __render_binding_order__( document_frame )
-		    
-		render_value_valid?( true, @__view_rendering_empty__ )
+	def __render_binding_order__( document_frame, view_rendering_empty = @__view_rendering_empty__ )
+
+		render_value_valid?( true, view_rendering_empty )
 
 		# Create our container node (self)
-		# This is most likely either a 'div' or a NodeSet, but could be anything.
+		# This is most likely either a :div or a NodeSet, but could be anything.
     container_node = __initialize_container_node__( document_frame )
 
 		__binding_order__.each do |this_binding_instance|
-	    __render_binding__( document_frame, container_node, this_binding_instance )
+	    __render_binding__( document_frame, 
+	                        container_node, 
+	                        this_binding_instance, 
+	                        view_rendering_empty )
 		end
 		
     return container_node
@@ -223,11 +221,14 @@ module ::Magnets::HTML::View::ObjectInstance
   #  __render_binding__  #
   ########################
   
-	def __render_binding__( document_frame, container_node, binding_instance )
+	def __render_binding__( document_frame, 
+	                        container_node, 
+	                        binding_instance, 
+	                        view_rendering_empty = @__view_rendering_empty__ )
 
     html_node = nil
 
-	  if html_node = binding_instance.to_html_node( document_frame )
+	  if html_node = binding_instance.to_html_node( document_frame, view_rendering_empty )
 
 	    case html_node
 	      

@@ -23,6 +23,7 @@ describe ::Magnets::HTML::View do
       include ::Magnets::HTML::View
       
       attr_text  :some_view, ::Magnets::HTML::View::SimpleMock
+      
       attr_texts :some_other_views, ::Magnets::HTML::View::SimpleMock
 
       attr_order :some_view, :some_other_views

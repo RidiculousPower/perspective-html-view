@@ -5,7 +5,7 @@ module ::Magnets::HTML::View::Bindings::MultiContainerProxy
   #  to_html_node  #
   ##################
 
-  def to_html_node( document_frame )
+  def to_html_node( document_frame, view_rendering_empty = false )
 
     html_nodes = ::Nokogiri::XML::NodeSet.new( document_frame )
     
