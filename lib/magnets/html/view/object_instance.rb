@@ -2,11 +2,9 @@
 module ::Magnets::HTML::View::ObjectInstance
   
   include ::Magnets::HTML::View::Configuration
-  include ::Magnets::Abstract::View::ObjectInstance
+  include ::Magnets::View::ObjectInstance
   
   include ::CascadingConfiguration::Setting
-
-  ccm = ::CascadingConfiguration::Methods
 
   #######################
   #  container_tag      #
@@ -15,7 +13,7 @@ module ::Magnets::HTML::View::ObjectInstance
 
 	attr_configuration  :__container_tag__
 
-  ccm.alias_module_and_instance_methods( self, :container_tag, :__container_tag__ )
+  Controller.alias_module_and_instance_methods( :container_tag, :__container_tag__ )
 
   self.__container_tag__ = :div
 

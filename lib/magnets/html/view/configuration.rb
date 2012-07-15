@@ -4,8 +4,6 @@ module ::Magnets::HTML::View::Configuration
   include ::CascadingConfiguration::Setting
   include ::CascadingConfiguration::Array
   
-  ccm = ::CascadingConfiguration::Methods
-  
   #################
   #  css_id       #
   #  css_id=      #
@@ -15,7 +13,7 @@ module ::Magnets::HTML::View::Configuration
   
   attr_configuration  :__css_id__
 
-  ccm.alias_module_and_instance_methods( self, :css_id, :__css_id__ )
+  Controller.alias_module_and_instance_methods( :css_id, :__css_id__ )
 	
   ####################
   #  css_class       #
@@ -26,6 +24,6 @@ module ::Magnets::HTML::View::Configuration
   
   attr_configuration	:__css_class__
 
-  ccm.alias_module_and_instance_methods( self, :css_class, :__css_class__ )
+  Controller.alias_module_and_instance_methods( :css_class, :__css_class__ )
   
 end
