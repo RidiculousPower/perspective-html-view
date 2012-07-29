@@ -1,7 +1,5 @@
 
 module ::Magnets::HTML::View::ClassInstance
-
-  include ::Magnets::HTML::View::Configuration
   
   ::Magnets::Bindings::Attributes.define_container_type( :HTML_view, true, :abstract_view ) do
     
