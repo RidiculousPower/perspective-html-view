@@ -1,8 +1,8 @@
 
-module ::Magnets::HTML::View::ObjectInstance
+module ::Perspective::HTML::View::ObjectInstance
   
-  include ::Magnets::HTML::View::Configuration
-  include ::Magnets::View::ObjectInstance
+  include ::Perspective::HTML::View::Configuration
+  include ::Perspective::View::ObjectInstance
   
   include ::CascadingConfiguration::Setting
 
@@ -88,7 +88,7 @@ module ::Magnets::HTML::View::ObjectInstance
 		# to put the data in place
 
     if ! binding_order_declared_empty? and __binding_order__.empty?
-      raise ::Magnets::Bindings::Exception::BindingOrderEmpty,
+      raise ::Perspective::Bindings::Exception::BindingOrderEmpty,
               'Binding order was empty. Declare binding order using :attr_order.'
     end
     

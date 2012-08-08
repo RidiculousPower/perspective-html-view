@@ -1,5 +1,5 @@
 
-module ::Magnets::HTML::View::Configuration
+module ::Perspective::HTML::View::Configuration
 
   include ::CascadingConfiguration::Setting
   include ::CascadingConfiguration::Array

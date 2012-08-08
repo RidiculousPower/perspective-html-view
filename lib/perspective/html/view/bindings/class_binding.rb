@@ -1,7 +1,7 @@
 
-module ::Magnets::HTML::View::Bindings::ClassBinding
+module ::Perspective::HTML::View::Bindings::ClassBinding
 
-  include ::Magnets::HTML::View::Configuration
+  include ::Perspective::HTML::View::Configuration
       
   #############################
   #  __validate_view_class__  #
@@ -12,7 +12,7 @@ module ::Magnets::HTML::View::Bindings::ClassBinding
     unless view_class.method_defined?( :to_html_node )     or 
            view_class.method_defined?( :to_html_fragment )
 
-      raise ::Magnets::Bindings::Exception::BindingInstanceInvalidType,
+      raise ::Perspective::Bindings::Exception::BindingInstanceInvalidType,
               'View class specified (' + view_class.to_s + ') does not respond to either ' +
               ':to_html_node or :to_html_fragment.'
     end

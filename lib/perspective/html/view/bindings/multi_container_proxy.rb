@@ -1,5 +1,5 @@
 
-module ::Magnets::HTML::View::Bindings::MultiContainerProxy
+module ::Perspective::HTML::View::Bindings::MultiContainerProxy
   
   ##################
   #  to_html_node  #

@@ -1,5 +1,5 @@
 
-module ::Magnets::HTML::View::Attributes::View
+module ::Perspective::HTML::View::Attributes::View
 
   ##########################
   #  binding_value_valid?  #

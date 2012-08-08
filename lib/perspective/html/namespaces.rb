@@ -1,5 +1,5 @@
 
-module ::Magnets::HTML
+module ::Perspective::HTML
   module View
     module Bindings
     end

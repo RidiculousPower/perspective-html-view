@@ -1,16 +1,16 @@
 
-require_relative '../../../lib/magnets-html-view.rb'
+require_relative '../../../lib/perspective/html/view.rb'
 
-describe ::Magnets::HTML::View do
+describe ::Perspective::HTML::View do
 
   before :all do
     
-    class ::Magnets::HTML::View::SimpleMock
+    class ::Perspective::HTML::View::SimpleMock
       
-      include ::Magnets::HTML::View
+      include ::Perspective::HTML::View
       
-      is_a?( ::Magnets::HTML::View::ClassInstance ).should == true
-      ancestors.include?( ::Magnets::HTML::View::ObjectInstance ).should == true
+      is_a?( ::Perspective::HTML::View::ClassInstance ).should == true
+      ancestors.include?( ::Perspective::HTML::View::ObjectInstance ).should == true
       attr_texts :content
       attr_text  :some_other_text
       
@@ -18,13 +18,13 @@ describe ::Magnets::HTML::View do
       
     end
     
-    class ::Magnets::HTML::View::Mock
+    class ::Perspective::HTML::View::Mock
       
-      include ::Magnets::HTML::View
+      include ::Perspective::HTML::View
       
-      attr_text  :some_view, ::Magnets::HTML::View::SimpleMock
+      attr_text  :some_view, ::Perspective::HTML::View::SimpleMock
       
-      attr_texts :some_other_views, ::Magnets::HTML::View::SimpleMock
+      attr_texts :some_other_views, ::Perspective::HTML::View::SimpleMock
 
       attr_order :some_view, :some_other_views
 
@@ -38,7 +38,7 @@ describe ::Magnets::HTML::View do
 
   it 'can create an array of nokogiri nodes for the declared binding order' do
 
-    instance = ::Magnets::HTML::View::SimpleMock.new
+    instance = ::Perspective::HTML::View::SimpleMock.new
     instance.content = 'some value'
     instance.some_other_text = 'some other value'
     node = instance.instance_eval do
@@ -56,7 +56,7 @@ describe ::Magnets::HTML::View do
 
   it 'can render self as nokogiri html node' do
     
-    instance = ::Magnets::HTML::View::Mock.new
+    instance = ::Perspective::HTML::View::Mock.new
     instance.some_view = 'some value'
     instance.some_other_views = [ ' and another value', ' and some other value' ]
     binding = instance.__binding__( :some_other_views )
@@ -72,14 +72,14 @@ describe ::Magnets::HTML::View do
   ######################
 
   it 'can render self as html fragment (from nokogiri html node)' do
-    instance = ::Magnets::HTML::View::Mock.new
+    instance = ::Perspective::HTML::View::Mock.new
     instance.some_view = 'some value'
     instance.some_other_views = [ ' and another value', ' and some other value' ]
     node = instance.to_html_fragment
-    node.should == '<div class="Magnets::HTML::View::Mock">
-  <div class="Magnets::HTML::View::SimpleMock" id="some_view">some value</div>
-  <div class="Magnets::HTML::View::SimpleMock" id="some_other_views1"> and another value</div>
-  <div class="Magnets::HTML::View::SimpleMock" id="some_other_views2"> and some other value</div>
+    node.should == '<div class="Perspective::HTML::View::Mock">
+  <div class="Perspective::HTML::View::SimpleMock" id="some_view">some value</div>
+  <div class="Perspective::HTML::View::SimpleMock" id="some_other_views1"> and another value</div>
+  <div class="Perspective::HTML::View::SimpleMock" id="some_other_views2"> and some other value</div>
 </div>'
   end
 
@@ -88,7 +88,7 @@ describe ::Magnets::HTML::View do
   #############
 
   it 'can render self as html fragment (from nokogiri html node)' do
-    instance = ::Magnets::HTML::View::Mock.new
+    instance = ::Perspective::HTML::View::Mock.new
     instance.some_view = 'some value'
     instance.some_other_views = [ ' and another value', ' and some other value' ]
     node = instance.to_html
@@ -98,10 +98,10 @@ describe ::Magnets::HTML::View do
 \t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />
 </head>
 \t<body>
-\t\t<div class=\"Magnets::HTML::View::Mock\">
-\t\t\t<div class=\"Magnets::HTML::View::SimpleMock\" id=\"some_view\">some value</div>
-\t\t\t<div class=\"Magnets::HTML::View::SimpleMock\" id=\"some_other_views1\"> and another value</div>
-\t\t\t<div class=\"Magnets::HTML::View::SimpleMock\" id=\"some_other_views2\"> and some other value</div>
+\t\t<div class=\"Perspective::HTML::View::Mock\">
+\t\t\t<div class=\"Perspective::HTML::View::SimpleMock\" id=\"some_view\">some value</div>
+\t\t\t<div class=\"Perspective::HTML::View::SimpleMock\" id=\"some_other_views1\"> and another value</div>
+\t\t\t<div class=\"Perspective::HTML::View::SimpleMock\" id=\"some_other_views2\"> and some other value</div>
 \t\t</div>
 \t</body>
 </html>\n"

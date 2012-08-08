@@ -1,7 +1,7 @@
 
-module ::Magnets::HTML::View::Bindings::InstanceBinding
+module ::Perspective::HTML::View::Bindings::InstanceBinding
 
-  include ::Magnets::HTML::View::Configuration
+  include ::Perspective::HTML::View::Configuration
 
 	##################
   #  to_html_node  #
