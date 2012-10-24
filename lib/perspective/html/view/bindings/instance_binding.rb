@@ -7,7 +7,7 @@ module ::Perspective::HTML::View::Bindings::InstanceBinding
   #  to_html_node  #
   ##################
   
-	def to_html_node( document_frame, view_rendering_empty = false )
+	def to_html_node( document_frame = nil, view_rendering_empty = false )
 
 		html_node = nil
 
