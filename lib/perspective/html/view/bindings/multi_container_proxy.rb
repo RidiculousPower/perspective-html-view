@@ -5,7 +5,7 @@ module ::Perspective::HTML::View::Bindings::MultiContainerProxy
   #  to_html_node  #
   ##################
 
-  def to_html_node( document_frame, view_rendering_empty = false )
+  def to_html_node( document_frame, view_rendering_empty = @__view_rendering_empty__ )
 
     html_nodes = ::Nokogiri::XML::NodeSet.new( document_frame )
     

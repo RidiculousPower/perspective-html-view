@@ -9,4 +9,18 @@ module ::Perspective::HTML::View::ClassInstance
     
   include ::Perspective::Bindings::AttributeContainer::HTMLView
 
+  #########
+  #  new  #
+  #########
+  
+  def new( *args )
+    
+    instance = super
+
+    instance.__css_class__ = non_nested_class.to_s
+	  
+    return instance
+    
+  end
+
 end

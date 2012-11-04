@@ -1,7 +1,10 @@
 
 # Nokogiri extension
 class Nokogiri::XML::Node
-  include ::Perspective::View::NokogiriXMLNode
+  include ::Perspective::HTML::View::NokogiriXMLNode
+end
+class Nokogiri::XML::NodeSet
+  include ::Perspective::HTML::View::NokogiriXMLNodeSet
 end
 
 module ::Perspective::Bindings::AttributeContainer::HTMLView::ClassBinding

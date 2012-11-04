@@ -2,10 +2,10 @@
 module ::Perspective::HTML::View::Attributes::View
 
   ##########################
-  #  binding_value_valid?  #
+  #  __binding_value_valid__?  #
   ##########################
 
-  def binding_value_valid?( binding_value )
+  def __binding_value_valid__?( binding_value )
     
     binding_value_valid = false
     

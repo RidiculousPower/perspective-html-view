@@ -17,6 +17,16 @@ module ::Perspective::HTML::View::ObjectInstance
 
   self.__container_tag__ = :div
 
+  ##############################
+  #  __initialize_for_index__  #
+  ##############################
+  
+  def __initialize_for_index__( index )
+    
+    self.__css_id__ += ( index + 1 ).to_s
+    
+  end
+
 	###################################  Rendering to HTML  ##########################################
 
   #############
@@ -71,7 +81,7 @@ module ::Perspective::HTML::View::ObjectInstance
   #  to_html_fragment  #
   ######################
 
-  def to_html_fragment( view_rendering_empty = false )
+  def to_html_fragment( view_rendering_empty = @__view_rendering_empty__ )
     
     return to_html_node( nil, view_rendering_empty ).to_s
 
@@ -81,7 +91,7 @@ module ::Perspective::HTML::View::ObjectInstance
   #  to_html_node  #
   ##################
 
-  def to_html_node( document_frame = nil, view_rendering_empty = false )
+  def to_html_node( document_frame = nil, view_rendering_empty = @__view_rendering_empty__ )
 
 		# we are rendering a Nokogiri XML node capable of producing XML or HTML
 		# this means we have to integrate data from object(s) to the view's bindings 
@@ -139,21 +149,18 @@ module ::Perspective::HTML::View::ObjectInstance
     
     container_node = nil
     
+    # If we don't have a container tag, create contents as set of nodes
     if container_tag = __container_tag__
-
       container_node = ::Nokogiri::XML::Node.new( container_tag.to_s, document_frame )
-    
-      # Record document frame in self-as-node
-      container_node.document_frame = document_frame
-      
-      __initialize_css_id_and_class__( container_node )
-      
     else
-
       container_node = ::Nokogiri::XML::NodeSet.new( document_frame )
-      
     end
     
+    # Record document frame in self-as-node
+    container_node.document_frame = document_frame
+    
+    __initialize_css_id_and_class__( container_node )
+      
     return container_node
     
   end
@@ -165,29 +172,11 @@ module ::Perspective::HTML::View::ObjectInstance
   def __initialize_css_id_and_class__( container_node )
     
     if css_class = __css_class__
-
-		  container_node[ 'class' ] = css_class.to_s
-
-	  else
-	    
-	    unless css_class == false
-  		  container_node[ 'class' ] = self.class.to_s
-      end
-	    
+		  container_node[ 'class' ] = css_class.to_s	    
     end
 
     if css_id = __css_id__
-
       container_node[ 'id' ] = css_id.to_s
-
-	  else
-	    
-	    unless css_id == false
-	      if route_string = __route_string__
-  		    container_node[ 'id' ] = route_string
-		    end
-      end
-
     end
     
   end
@@ -198,54 +187,36 @@ module ::Perspective::HTML::View::ObjectInstance
   
 	def __render_binding_order__( document_frame, view_rendering_empty = @__view_rendering_empty__ )
 
-		render_value_valid?( true, view_rendering_empty )
+		__render_value_valid__?( true, view_rendering_empty )
 
 		# Create our container node (self)
-		# This is most likely either a :div or a NodeSet, but could be anything.
+		# This is most likely either a Div or a NodeSet, but could be anything.
     container_node = __initialize_container_node__( document_frame )
 
 		__binding_order__.each do |this_binding_instance|
-	    __render_binding__( document_frame, 
-	                        container_node, 
-	                        this_binding_instance, 
-	                        view_rendering_empty )
+
+	    case html_node = this_binding_instance.to_html_node( document_frame, view_rendering_empty )
+	    
+	      when nil
+	      
+	        # nothing to do
+      
+	      when ::Nokogiri::XML::NodeSet
+      
+          html_node.each do |this_html_node|
+  		      container_node << this_html_node
+	        end
+      
+        else
+
+  		    container_node << html_node
+    
+	    end
+
 		end
 		
     return container_node
     
 	end
-
-	########################
-  #  __render_binding__  #
-  ########################
-  
-	def __render_binding__( document_frame, 
-	                        container_node, 
-	                        binding_instance, 
-	                        view_rendering_empty = @__view_rendering_empty__ )
-
-    html_node = nil
-
-	  if html_node = binding_instance.to_html_node( document_frame, view_rendering_empty )
-
-	    case html_node
-	      
-	      when ::Nokogiri::XML::NodeSet
-        
-          html_node.each do |this_html_node|
-  		      container_node << this_html_node
-	        end
-        
-        else
-
-  		    container_node << html_node
-	    
-	    end
-
-    end
-    
-    return html_node
-
-  end
   
 end

@@ -39,14 +39,14 @@ describe ::Perspective::HTML::View do
   it 'can create an array of nokogiri nodes for the declared binding order' do
 
     instance = ::Perspective::HTML::View::SimpleMock.new
-    instance.content.value = 'some value'
-    instance.some_other_text.value = 'some other value'
+    instance.content = 'some value'
+    instance.some_other_text = 'some other value'
     node = instance.instance_eval do
       __render_binding_order__( __initialize_document_frame__ )
     end
     node.is_a?( ::Nokogiri::XML::Element ).should == true
     node.name.should == 'div'
-    node.content.should == instance.content.value + instance.some_other_text.value
+    node.content.should == instance.content + instance.some_other_text
     
   end
   
@@ -57,12 +57,31 @@ describe ::Perspective::HTML::View do
   it 'can render self as nokogiri html node' do
     
     instance = ::Perspective::HTML::View::Mock.new
-    instance.some_view.value = 'some value'
-    instance.some_other_views.value = [ ' and another value', ' and some other value' ]
-    binding = instance.__binding__( :some_other_views )
+
+    instance.some_view = 'some value'
+    instance.some_other_views = [ ' and another value', ' and some other value' ]
+
     node = instance.to_html_node
+
     node.is_a?( ::Nokogiri::XML::Element ).should == true
     node.name.should == 'div'
+    node[ 'class' ].should == 'Perspective::HTML::View::Mock'
+
+    node.children[ 0 ].name.should == 'div'
+    node.children[ 0 ][ 'class' ].should == 'Perspective::HTML::View::SimpleMock'
+    node.children[ 0 ][ 'id' ].should == 'some_view'
+    node.children[ 0 ].content.should == 'some value'
+
+    node.children[ 1 ].name.should == 'div'
+    node.children[ 1 ][ 'class' ].should == 'Perspective::HTML::View::SimpleMock'
+    node.children[ 1 ][ 'id' ].should == 'some_other_views1'
+    node.children[ 1 ].content.should == ' and another value'
+
+    node.children[ 2 ].name.should == 'div'
+    node.children[ 2 ][ 'class' ].should == 'Perspective::HTML::View::SimpleMock'
+    node.children[ 2 ][ 'id' ].should == 'some_other_views2'
+    node.children[ 2 ].content.should == ' and some other value'
+    
     node.content.should == 'some value and another value and some other value'
 
   end
@@ -73,10 +92,10 @@ describe ::Perspective::HTML::View do
 
   it 'can render self as html fragment (from nokogiri html node)' do
     instance = ::Perspective::HTML::View::Mock.new
-    instance.some_view.value = 'some value'
-    instance.some_other_views.value = [ ' and another value', ' and some other value' ]
-    node = instance.to_html_fragment
-    node.should == '<div class="Perspective::HTML::View::Mock">
+    instance.some_view = 'some value'
+    instance.some_other_views = [ ' and another value', ' and some other value' ]
+    fragment = instance.to_html_fragment
+    fragment.should == '<div class="Perspective::HTML::View::Mock">
   <div class="Perspective::HTML::View::SimpleMock" id="some_view">some value</div>
   <div class="Perspective::HTML::View::SimpleMock" id="some_other_views1"> and another value</div>
   <div class="Perspective::HTML::View::SimpleMock" id="some_other_views2"> and some other value</div>
@@ -89,8 +108,8 @@ describe ::Perspective::HTML::View do
 
   it 'can render self as html fragment (from nokogiri html node)' do
     instance = ::Perspective::HTML::View::Mock.new
-    instance.some_view.value = 'some value'
-    instance.some_other_views.value = [ ' and another value', ' and some other value' ]
+    instance.some_view = 'some value'
+    instance.some_other_views = [ ' and another value', ' and some other value' ]
     node = instance.to_html
     node.should == "<!DOCTYPE html>
 <html xmlns=\"http://www.w3.org/1999/xhtml\">

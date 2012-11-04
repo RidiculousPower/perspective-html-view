@@ -17,7 +17,8 @@ files = [
   'class_instance',
   'object_instance',
   
-  'nokogiri_xml_node'
+  'nokogiri_xml_node',
+  'nokogiri_xml_nodeset'
   
 ]
 
