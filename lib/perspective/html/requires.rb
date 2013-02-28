@@ -2,26 +2,26 @@
 # we are using nokogiri for now, but that may change
 require 'nokogiri'
 
-basepath = 'view'
-
 files = [
 
-  'attributes/view',
+  'view/binding_definitions/view',
+
+  'view/configuration',
   
-  'configuration',
+  '../binding_types/html',
   
-  'bindings/class_binding',
-  'bindings/instance_binding',
-  'bindings/multi_container_proxy',
+  '../binding_types/html_bindings/class_binding',
+  '../binding_types/html_bindings/instance_binding',
+  '../binding_types/html_bindings/view/instance_binding',
   
-  'class_instance',
-  'object_instance',
-  
-  'nokogiri_xml_node',
-  'nokogiri_xml_nodeset'
+  'view/singleton_instance',
+  'view/object_instance',
+
+  'view/nokogiri/initialize_document',
+  '../../../lib_ext/nokogiri/xml/node',
+  '../../../lib_ext/nokogiri/xml/node_set'
+
   
 ]
 
-files.each do |this_file|
-  require_relative( File.join( basepath, this_file ) + '.rb' )
-end
+files.each { |this_file| require_relative( this_file << '.rb' ) }

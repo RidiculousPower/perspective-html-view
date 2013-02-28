@@ -1,9 +1,9 @@
 
-module ::Perspective::HTML::View::Attributes::View
+module ::Perspective::HTML::View::BindingDefinitions::View
 
-  ##########################
+  ##############################
   #  __binding_value_valid__?  #
-  ##########################
+  ##############################
 
   def __binding_value_valid__?( binding_value )
     

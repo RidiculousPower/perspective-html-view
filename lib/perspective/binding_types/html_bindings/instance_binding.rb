@@ -1,5 +1,5 @@
 
-module ::Perspective::HTML::View::Bindings::InstanceBinding
+module ::Perspective::BindingTypes::HTMLBindings::InstanceBinding
 
   include ::Perspective::HTML::View::Configuration
 
@@ -7,7 +7,7 @@ module ::Perspective::HTML::View::Bindings::InstanceBinding
   #  __configure_container__  #
   #############################
   
-  def __configure_container__( bound_container = nil )
+  def __configure_container__( bound_container = __bound_container__ )
   
     __configure_container_css_id__
     
@@ -58,15 +58,25 @@ module ::Perspective::HTML::View::Bindings::InstanceBinding
   #  to_html_node  #
   ##################
   
-	def to_html_node( document_frame = nil, view_rendering_empty = @__view_rendering_empty__ )
+	def to_html_node( document = nil, view_rendering_empty = @__view_rendering_empty__ )
 
 		html_node = nil
+		
+		if __permits_multiple__? and __view_count__ > 1
+		  
+		  html_node = ::Nokogiri::XML::NodeSet.new( document )
+      view.each_with_index do |this_view, this_index|
+        unless css_id = this_view.__css_id__ or css_id == false
+          this_view.__css_id__ = @__parent_binding__.__route_string__.to_s + ( this_index + 1 ).to_s
+        end
+        html_node << this_view.to_html_node
+      end
+	    
+	  elsif view = __view__
+	    
+	    if view.respond_to?( :to_html_node )
 
-    if view = __view__
-
-  		if view.respond_to?( :to_html_node )
-
-  		  html_node = view.to_html_node( document_frame, view_rendering_empty )
+  		  html_node = view.to_html_node( document, view_rendering_empty )
 
   		elsif view.respond_to?( :to_html_fragment )
 
@@ -74,27 +84,27 @@ module ::Perspective::HTML::View::Bindings::InstanceBinding
         # there doesn't appear to be a way to include a chunk of raw html
         # so we have to parse it and create nodes to include it
   	    html_node = ::Nokogiri::XML::DocumentFragment.parse( html_fragment )
-		  
+	  
   		end
-
+  		
     elsif value = __value__
-      
+
       if value.respond_to?( :to_html_node )
 
-		    html_node = value.to_html_node( document_frame, view_rendering_empty )
-      
+		    html_node = value.to_html_node( document, view_rendering_empty )
+
       elsif value.respond_to?( :to_html_fragment )
-      
+
         html_fragment = value.to_html_fragment( view_rendering_empty )
   	    html_node = ::Nokogiri::XML::DocumentFragment.parse( html_fragment )
-      
+
       elsif render_value = __render_value__( value )
-        
-        html_node = ::Nokogiri::XML::Text.new( render_value, document_frame )
-    	
+
+        html_node = ::Nokogiri::XML::Text.new( render_value, document )
+
     	end
-	    	
-		end
+	    
+    end
 		
 		return html_node
 

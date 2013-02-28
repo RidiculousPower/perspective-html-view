@@ -1,7 +1,145 @@
 
 require_relative '../../../lib/perspective/html/view.rb'
 
+require_relative ::File.join ::Perspective::Bindings.spec_location, 'perspective/bindings/container_and_bindings_spec/container_and_bindings_test_setup.rb'
+require_relative ::File.join ::Perspective::Bindings.spec_location, 'perspective/bindings/container_and_bindings_spec/container_and_bindings.rb'
+
 describe ::Perspective::HTML::View do
+
+  describe ::Perspective::BindingTypes::HTMLBindings::ClassBinding do
+
+    #############################
+    #  __validate_view_class__  #
+    #############################
+
+    context '#__validate_view_class__' do
+      it 'ensures that :to_html_node or :to_html_fragment are defined' do
+        puts 'class: ' + class_instance.a.class.to_s
+        # 1. if subclassing does not happen for first, do not do for later
+        # 2. type container for type does not match
+        ::Proc.new { class_instance.a.__validate_view_class__( ::Object ) }.should raise_error( ::Perspective::Bindings::Exception::BindingInstanceInvalidType )
+      end
+    end
+
+  end
+
+  describe ::Perspective::BindingTypes::HTMLBindings::InstanceBinding do
+
+    #############################
+    #  __configure_container__  #
+    #############################
+
+    context '#__configure_container__' do
+    end
+
+    ####################################
+    #  __configure_container_css_id__  #
+    ####################################
+
+    context '#__configure_container_css_id__' do
+    end
+
+    ######################################
+    #  __create_multi_container_proxy__  #
+    ######################################
+
+    context '#__create_multi_container_proxy__' do
+    end
+
+  	##################
+    #  to_html_node  #
+    ##################
+
+    context '#to_html_node' do
+    end
+
+  end
+
+  ##################################################################################################
+  #   private ######################################################################################
+  ##################################################################################################
+
+  ###################################
+  #  __initialize_container_node__  #
+  ###################################
+  
+  context '#__initialize_container_node__' do
+  end
+
+	#####################################
+  #  __initialize_css_id_and_class__  #
+  #####################################
+  
+  context '#__initialize_css_id_and_class__' do
+  end
+  
+	##############################
+  #  __render_binding_order__  #
+  ##############################
+
+  context '#__render_binding_order__' do
+  end
+
+  ##################################################################################################
+  #   public #######################################################################################
+  ##################################################################################################
+
+  #######################
+  #  __container_tag__  #
+  #######################
+
+  context '#__container_tag__' do
+  end
+
+  ###################
+  #  container_tag  #
+  ###################
+
+  context '#container_tag' do
+  end
+
+  ####################
+  #  container_tag=  #
+  ####################
+
+  context '#container_tag=' do
+  end
+
+  ##############################
+  #  __initialize_for_index__  #
+  ##############################
+  
+  context '#__initialize_for_index__' do
+  end
+
+  #############
+  #  to_html  #
+  #############
+
+  context '#to_html' do
+  end
+  
+  ######################
+  #  to_html_fragment  #
+  ######################
+
+  context '#to_html_fragment' do
+  end
+
+  ##################
+  #  to_html_node  #
+  ##################
+
+  context '#to_html_node' do
+  end
+  
+
+
+
+
+
+
+
 
   before :all do
     
@@ -9,7 +147,7 @@ describe ::Perspective::HTML::View do
       
       include ::Perspective::HTML::View
       
-      is_a?( ::Perspective::HTML::View::ClassInstance ).should == true
+      is_a?( ::Perspective::HTML::View::SingletonInstance ).should == true
       ancestors.include?( ::Perspective::HTML::View::ObjectInstance ).should == true
       attr_texts :content
       attr_text  :some_other_text
@@ -42,7 +180,7 @@ describe ::Perspective::HTML::View do
     instance.content = 'some value'
     instance.some_other_text = 'some other value'
     node = instance.instance_eval do
-      __render_binding_order__( __initialize_document_frame__ )
+      __render_binding_order__( __initialize_document__ )
     end
     node.is_a?( ::Nokogiri::XML::Element ).should == true
     node.name.should == 'div'

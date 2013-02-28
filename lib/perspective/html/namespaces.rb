@@ -3,7 +3,9 @@ module ::Perspective::HTML
   module View
     module Bindings
     end
-    module Attributes
+    module BindingDefinitions
+    end
+    module Nokogiri
     end
   end
 end

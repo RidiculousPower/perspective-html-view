@@ -1,5 +1,5 @@
 
-module ::Perspective::HTML::View::Bindings::ClassBinding
+module ::Perspective::BindingTypes::HTMLBindings::ClassBinding
 
   include ::Perspective::HTML::View::Configuration
       
