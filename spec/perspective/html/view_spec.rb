@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 
 require_relative '../../../lib/perspective/html/view.rb'
 
@@ -6,18 +7,40 @@ require_relative ::File.join ::Perspective::Bindings.spec_location, 'perspective
 
 describe ::Perspective::HTML::View do
 
+  let( :bindings_module ) { ::Perspective::HTML::View }
+  setup_container_and_bindings_tests  
+  
+#  it_behaves_like :container_and_bindings
+
   describe ::Perspective::BindingTypes::HTMLBindings::ClassBinding do
 
     #############################
-    #  __validate_view_class__  #
+    #  «validate_view_class  #
     #############################
 
-    context '#__validate_view_class__' do
-      it 'ensures that :to_html_node or :to_html_fragment are defined' do
-        puts 'class: ' + class_instance.a.class.to_s
-        # 1. if subclassing does not happen for first, do not do for later
-        # 2. type container for type does not match
-        ::Proc.new { class_instance.a.__validate_view_class__( ::Object ) }.should raise_error( ::Perspective::Bindings::Exception::BindingInstanceInvalidType )
+    context '#«validate_view_class' do
+      context 'has :to_html_node' do
+        let( :view_instance_class ) do
+          ::Class.new do
+            def to_html_node
+            end
+          end
+        end
+        it( 'will match instances that respond to :to_html_node' ) { class_instance.a.«validate_view_class( view_instance_class ).should be true }
+      end
+      context 'has :to_html_fragment' do
+        let( :view_instance_class ) do
+          ::Class.new do
+            def to_html_fragment
+            end
+          end
+        end
+        it( 'will match instances that respond to :to_html_fragment' ) { class_instance.a.«validate_view_class( view_instance_class ).should be true }
+      end
+      context 'has neither' do
+        it 'ensures that :to_html_node or :to_html_fragment are defined' do
+          ::Proc.new { class_instance.a.«validate_view_class( ::Object ) }.should raise_error( ::Perspective::Bindings::Exception::BindingInstanceInvalidType )
+        end
       end
     end
 
@@ -25,32 +48,46 @@ describe ::Perspective::HTML::View do
 
   describe ::Perspective::BindingTypes::HTMLBindings::InstanceBinding do
 
-    #############################
-    #  __configure_container__  #
-    #############################
+    ####################
+    #  initialize_css  #
+    ####################
 
-    context '#__configure_container__' do
-    end
-
-    ####################################
-    #  __configure_container_css_id__  #
-    ####################################
-
-    context '#__configure_container_css_id__' do
-    end
-
-    ######################################
-    #  __create_multi_container_proxy__  #
-    ######################################
-
-    context '#__create_multi_container_proxy__' do
-    end
-
-  	##################
-    #  to_html_node  #
-    ##################
-
-    context '#to_html_node' do
+    context '#initialize_css' do
+      context 'permits_multiple? is false' do
+        context 'when id and/or class explicitly set' do
+          before :each do
+            instance_of_class.a.«css_id = :a_css_id
+            instance_of_class.a.«css_class = :a_css_class
+          end
+          it 'it will keep explicit setting' do
+            instance_of_class.a.«css_id.should == :a_css_id
+            instance_of_class.a.«css_class.should == :a_css_class
+          end
+        end
+        context 'when id and/or class set to false' do
+          before :each do
+            instance_of_class.a.«css_id = false
+            instance_of_class.a.«css_class = false
+          end
+          it 'will not auto-generate' do
+            instance_of_class.a.«css_id.should == false
+            instance_of_class.a.«css_class.should == false
+          end
+        end
+        context 'when generating id and/or class' do
+          it 'will auto-generate' do
+            instance_of_class.a.«css_id.should == 'a'
+            instance_of_class.a.«css_class.should == instance_of_class.a.«container.class.to_s
+          end
+        end
+      end
+      context 'permits_multiple? is true' do
+        it 'will auto-generate' do
+          new_container = instance_of_multiple_container_class.multiple_binding.«create_additional_container
+          new_container.«css_id.should == 'multiple_binding2'
+          new_container.«css_class.should == instance_of_multiple_container_class.multiple_binding.«container.class.to_s
+        end
+      end
     end
 
   end
@@ -60,24 +97,17 @@ describe ::Perspective::HTML::View do
   ##################################################################################################
 
   ###################################
-  #  __initialize_container_node__  #
+  #  «initialize_container_node  #
   ###################################
   
-  context '#__initialize_container_node__' do
-  end
-
-	#####################################
-  #  __initialize_css_id_and_class__  #
-  #####################################
-  
-  context '#__initialize_css_id_and_class__' do
+  context '#«initialize_container_node' do
   end
   
 	##############################
-  #  __render_binding_order__  #
+  #  «render_binding_order  #
   ##############################
 
-  context '#__render_binding_order__' do
+  context '#«render_binding_order' do
   end
 
   ##################################################################################################
@@ -85,10 +115,10 @@ describe ::Perspective::HTML::View do
   ##################################################################################################
 
   #######################
-  #  __container_tag__  #
+  #  «container_tag  #
   #######################
 
-  context '#__container_tag__' do
+  context '#«container_tag' do
   end
 
   ###################
@@ -106,10 +136,10 @@ describe ::Perspective::HTML::View do
   end
 
   ##############################
-  #  __initialize_for_index__  #
+  #  initialize_for_index  #
   ##############################
   
-  context '#__initialize_for_index__' do
+  context '#initialize_for_index' do
   end
 
   #############
@@ -171,7 +201,7 @@ describe ::Perspective::HTML::View do
   end
 
 	##############################
-  #  __render_binding_order__  #
+  #  «render_binding_order  #
   ##############################
 
   it 'can create an array of nokogiri nodes for the declared binding order' do
@@ -180,7 +210,7 @@ describe ::Perspective::HTML::View do
     instance.content = 'some value'
     instance.some_other_text = 'some other value'
     node = instance.instance_eval do
-      __render_binding_order__( __initialize_document__ )
+      «render_binding_order( «initialize_document )
     end
     node.is_a?( ::Nokogiri::XML::Element ).should == true
     node.name.should == 'div'

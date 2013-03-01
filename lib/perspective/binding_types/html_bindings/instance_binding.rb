@@ -1,78 +1,55 @@
+# -*- encoding : utf-8 -*-
 
 module ::Perspective::BindingTypes::HTMLBindings::InstanceBinding
 
   include ::Perspective::HTML::View::Configuration
 
-  #############################
-  #  __configure_container__  #
-  #############################
-  
-  def __configure_container__( bound_container = __bound_container__ )
-  
-    __configure_container_css_id__
+  ################
+  #  initialize  #
+  ################
+
+  def initialize( parent_class_binding, bound_container_instance )
     
     super
     
+    initialize_css
+    
   end
-  
-  ####################################
-  #  __configure_container_css_id__  #
-  ####################################
-  
-  def __configure_container_css_id__( container_instance = __container__ )
-  
-    if container_instance
 
-      container_css_id = container_instance.__css_id__   
-      
-      unless container_css_id or container_css_id == false
+  ####################
+  #  initialize_css  #
+  ####################
+  
+  def initialize_css
+  
+    # css_class
+    unless css_class = «css_class or css_class == false
+		  self.«css_class = container.class.to_s if container = «container
+    end
 
-  	    self.__css_id__ = __route_string__
-      end
-    
-      container_css_class = container_instance.__css_class__   
-
-	    unless container_css_class or container_css_class == false
-  		  self.__css_class__ = container_instance.class.to_s
-      end
-    
-    end    
+    # css_id
+    unless css_id = «css_id or css_id == false
+	    self.«css_id = «route_string.dup
+    end
     
     return self
   
   end
-    
-  ######################################
-  #  __create_multi_container_proxy__  #
-  ######################################
   
-  def __create_multi_container_proxy__( data_object )
-
-    __container__.__css_id__ += '1'
-    
-    return super
-    
-  end
-
 	##################
   #  to_html_node  #
   ##################
   
-	def to_html_node( document = nil, view_rendering_empty = @__view_rendering_empty__ )
+	def to_html_node( document = nil, view_rendering_empty = @«view_rendering_empty )
 
 		html_node = nil
 		
-		if __permits_multiple__? and __view_count__ > 1
+		if permits_multiple? and «view_count > 1
 		  
 		  html_node = ::Nokogiri::XML::NodeSet.new( document )
-      view.each_with_index do |this_view, this_index|
-        unless css_id = this_view.__css_id__ or css_id == false
-          this_view.__css_id__ = @__parent_binding__.__route_string__.to_s + ( this_index + 1 ).to_s
-        end
-        html_node << this_view.to_html_node
-      end
+      each { |this_view| html_node << this_view.to_html_node }
 	    
-	  elsif view = __view__
+	  elsif view = «view
 	    
 	    if view.respond_to?( :to_html_node )
 
@@ -87,7 +64,7 @@ module ::Perspective::BindingTypes::HTMLBindings::InstanceBinding
 	  
   		end
   		
-    elsif value = __value__
+    elsif value = «value
 
       if value.respond_to?( :to_html_node )
 
@@ -98,7 +75,7 @@ module ::Perspective::BindingTypes::HTMLBindings::InstanceBinding
         html_fragment = value.to_html_fragment( view_rendering_empty )
   	    html_node = ::Nokogiri::XML::DocumentFragment.parse( html_fragment )
 
-      elsif render_value = __render_value__( value )
+      elsif render_value = «render_value( value )
 
         html_node = ::Nokogiri::XML::Text.new( render_value, document )
 

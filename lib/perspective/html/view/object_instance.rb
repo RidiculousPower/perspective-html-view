@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 
 module ::Perspective::HTML::View::ObjectInstance
   
@@ -6,37 +7,75 @@ module ::Perspective::HTML::View::ObjectInstance
   
   include ::CascadingConfiguration::Setting
   
+  #########################
+  #  initialize_instance  #
+  #########################
+
+  def initialize_instance
+    
+    super
+    
+    initialize_css
+    
+  end
+
+  ####################
+  #  initialize_css  #
+  ####################
+  
+  def initialize_css
+  
+    # css_class
+    unless css_class = «css_class or css_class == false
+		  self.«css_class = self.class.to_s
+    end
+
+    # css_id
+    unless css_id = «css_id or css_id == false
+      if route_string = «route_string
+  	    self.«css_id = route_string.dup
+	    else
+  	    self.«css_id = '<root>'
+      end
+    end
+    
+    return self
+  
+  end
+
   #######################
-  #  __container_tag__  #
+  #  «container_tag  #
   #######################
 
-	attr_configuration  :__container_tag__
+	attr_configuration  :«container_tag
 
   ###########################
   #  Default Container Tag  #
   ###########################
   
-  self.__container_tag__ = :div
+  self.«container_tag = :div
 
   ###################
   #  container_tag  #
   ###################
 
-  alias_method :container_tag, :__container_tag__
+  alias_method :container_tag, :«container_tag
 
   ####################
   #  container_tag=  #
   ####################
 
-  alias_method :container_tag=, :__container_tag__=
+  alias_method :container_tag=, :«container_tag=
 
-  ##############################
-  #  __initialize_for_index__  #
-  ##############################
+  ##########################
+  #  initialize_for_index  #
+  ##########################
   
-  def __initialize_for_index__( index )
+  def initialize_for_index( index )
     
-    self.__css_id__ += ( index + 1 ).to_s
+    if css_id = self.«css_id 
+      css_id << ( index + 1 ).to_s
+    end
     
   end
 
@@ -94,7 +133,7 @@ module ::Perspective::HTML::View::ObjectInstance
   #  to_html_fragment  #
   ######################
 
-  def to_html_fragment( view_rendering_empty = @__view_rendering_empty__ )
+  def to_html_fragment( view_rendering_empty = @«view_rendering_empty )
     
     return to_html_node( nil, view_rendering_empty ).to_s
 
@@ -104,31 +143,15 @@ module ::Perspective::HTML::View::ObjectInstance
   #  to_html_node  #
   ##################
 
-  def to_html_node( document = nil, view_rendering_empty = @__view_rendering_empty__ )
-
-		# we are rendering a Nokogiri XML node capable of producing XML or HTML
-		# this means we have to integrate data from object(s) to the view's bindings 
-		# to put the data in place
-
-    if ! binding_order_declared_empty? and __binding_order__.empty?
-      raise ::Perspective::Bindings::Exception::BindingOrderEmpty,
-              'Binding order was empty. Declare binding order using :attr_order.'
-    end
-    
-    initialized_document = false
-    
-    unless document
-      document = __initialize_document__
-      initialized_document = true
-    end
+  def to_html_node( document = nil, view_rendering_empty = @«view_rendering_empty )
+		
+    ensure_binding_order_declared!
     
 		# if we have an attribute order defined that means we have child elements
-		# we have to render those child elements
-		nodes_from_self = __render_binding_order__( document, view_rendering_empty )
+		nodes_from_self = «render_binding_order( document, view_rendering_empty )
     
-    if initialized_document
-      document.root = nodes_from_self
-    end
+    # if we weren't passed a document, we created it and are responsible for the root node
+    document.root = nodes_from_self if document
     
     return nodes_from_self 
     
@@ -139,55 +162,45 @@ module ::Perspective::HTML::View::ObjectInstance
   ##################################################################################################
 
   ###################################
-  #  __initialize_container_node__  #
+  #  «initialize_container_node  #
   ###################################
   
-  def __initialize_container_node__( document = nil )
+  def «initialize_container_node( document = nil )
     
     container_node = nil
     
     # If we don't have a container tag, create contents as set of nodes
-    if container_tag = __container_tag__
+    if container_tag = «container_tag
       container_node = ::Nokogiri::XML::Node.new( container_tag.to_s, document )
     else
       container_node = ::Nokogiri::XML::NodeSet.new( document )
     end
     
-    __initialize_css_id_and_class__( container_node )
+    if css_class = «css_class
+		  container_node[ 'class' ] = css_class.to_s	    
+    end
+
+    if css_id = «css_id
+      container_node[ 'id' ] = css_id.to_s
+    end
       
     return container_node
     
   end
-
-	#####################################
-  #  __initialize_css_id_and_class__  #
-  #####################################
-  
-  def __initialize_css_id_and_class__( container_node )
-    
-    if css_class = __css_class__
-		  container_node[ 'class' ] = css_class.to_s	    
-    end
-
-    if css_id = __css_id__
-      container_node[ 'id' ] = css_id.to_s
-    end
-    
-  end
   	
 	##############################
-  #  __render_binding_order__  #
+  #  «render_binding_order  #
   ##############################
   
-	def __render_binding_order__( document = nil, view_rendering_empty = @__view_rendering_empty__ )
+	def «render_binding_order( document = nil, view_rendering_empty = @«view_rendering_empty )
 
-		__required_bindings_present__?( true, view_rendering_empty )
+    ensure_required_bindings_present! unless view_rendering_empty
 
 		# Create our container node (self)
 		# This is most likely either a Div or a NodeSet, but could be anything.
-    container_node = __initialize_container_node__( document )
+    container_node = «initialize_container_node( document )
 
-		__binding_order__.each do |this_binding|
+		«binding_order.each do |this_binding|
 	    case html_node = this_binding.to_html_node( document, view_rendering_empty )
 	      when nil
 	        # nothing to do

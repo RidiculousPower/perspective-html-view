@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 
 # we are using nokogiri for now, but that may change
 require 'nokogiri'

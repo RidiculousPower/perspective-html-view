@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 
 require_relative '../../../../../lib/perspective/html/view.rb'
 
@@ -22,10 +23,10 @@ describe ::Perspective::HTML::View::BindingDefinitions::View do
   let( :view_instance ) { view_instance_class.new }
 
   ##############################
-  #  __binding_value_valid__?  #
+  #  binding_value_valid?  #
   ##############################
 
-  context '#__binding_value_valid__?' do
+  context '#binding_value_valid?' do
     context 'has :to_html_node' do
       let( :view_instance_class ) do
         ::Class.new do
