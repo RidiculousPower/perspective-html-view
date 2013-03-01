@@ -22,9 +22,9 @@ describe ::Perspective::HTML::View::BindingDefinitions::View do
   
   let( :view_instance ) { view_instance_class.new }
 
-  ##############################
+  ##########################
   #  binding_value_valid?  #
-  ##############################
+  ##########################
 
   context '#binding_value_valid?' do
     context 'has :to_html_node' do

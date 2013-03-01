@@ -24,7 +24,7 @@ module ::Perspective::HTML::View::ObjectInstance
   ####################
   
   def initialize_css
-  
+
     # css_class
     unless css_class = «css_class or css_class == false
 		  self.«css_class = self.class.to_s
@@ -43,9 +43,12 @@ module ::Perspective::HTML::View::ObjectInstance
   
   end
 
-  #######################
-  #  «container_tag  #
-  #######################
+  ##########################
+  #  self.«container_tag   #
+  #  self.«container_tag=  #
+  #  «container_tag        #
+  #  «container_tag=       #
+  ##########################
 
 	attr_configuration  :«container_tag
 
@@ -55,17 +58,19 @@ module ::Perspective::HTML::View::ObjectInstance
   
   self.«container_tag = :div
 
-  ###################
-  #  container_tag  #
-  ###################
+  ########################
+  #  self.container_tag  #
+  #  container_tag       #
+  ########################
 
-  alias_method :container_tag, :«container_tag
+  Controller.alias_module_and_instance_methods :container_tag, :«container_tag
 
-  ####################
-  #  container_tag=  #
-  ####################
+  #########################
+  #  self.container_tag=  #
+  #  container_tag=       #
+  #########################
 
-  alias_method :container_tag=, :«container_tag=
+  Controller.alias_module_and_instance_methods :container_tag=, :«container_tag=
 
   ##########################
   #  initialize_for_index  #
@@ -161,9 +166,9 @@ module ::Perspective::HTML::View::ObjectInstance
       private ######################################################################################
   ##################################################################################################
 
-  ###################################
+  ################################
   #  «initialize_container_node  #
-  ###################################
+  ################################
   
   def «initialize_container_node( document = nil )
     
@@ -171,26 +176,30 @@ module ::Perspective::HTML::View::ObjectInstance
     
     # If we don't have a container tag, create contents as set of nodes
     if container_tag = «container_tag
-      container_node = ::Nokogiri::XML::Node.new( container_tag.to_s, document )
-    else
-      container_node = ::Nokogiri::XML::NodeSet.new( document )
-    end
-    
-    if css_class = «css_class
-		  container_node[ 'class' ] = css_class.to_s	    
-    end
 
-    if css_id = «css_id
-      container_node[ 'id' ] = css_id.to_s
+      container_node = ::Nokogiri::XML::Node.new( container_tag.to_s, document )
+
+      if css_class = «css_class
+  		  container_node[ 'class' ] = css_class.to_s	    
+      end
+
+      if css_id = «css_id
+        container_node[ 'id' ] = css_id.to_s
+      end
+
+    else
+
+      container_node = ::Nokogiri::XML::NodeSet.new( document )
+
     end
       
     return container_node
     
   end
   	
-	##############################
+	###########################
   #  «render_binding_order  #
-  ##############################
+  ###########################
   
 	def «render_binding_order( document = nil, view_rendering_empty = @«view_rendering_empty )
 
