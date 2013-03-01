@@ -1,6 +1,8 @@
 
 module ::Perspective::HTML::View::BindingDefinitions::View
 
+  include ::Perspective::View::BindingDefinitions::View
+  
   ##############################
   #  __binding_value_valid__?  #
   ##############################
