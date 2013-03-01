@@ -4,9 +4,9 @@ module ::Perspective::HTML::View::BindingDefinitions::View
 
   include ::Perspective::View::BindingDefinitions::View
   
-  ##############################
+  ##########################
   #  binding_value_valid?  #
-  ##############################
+  ##########################
 
   def binding_value_valid?( binding_value )
     

@@ -23,13 +23,13 @@ module ::Perspective::BindingTypes::HTMLBindings::InstanceBinding
   def initialize_css
   
     # css_class
-    unless css_class = «css_class or css_class == false
-		  self.«css_class = container.class.to_s if container = «container
+    unless css_class = «css_class» or css_class == false
+		  self.«css_class» = container.class.to_s if container = «container»
     end
 
     # css_id
-    unless css_id = «css_id or css_id == false
-	    self.«css_id = «route_string.dup
+    unless css_id = «css_id» or css_id == false
+	    self.«css_id» = «route_string».dup
     end
     
     return self
@@ -40,16 +40,16 @@ module ::Perspective::BindingTypes::HTMLBindings::InstanceBinding
   #  to_html_node  #
   ##################
   
-	def to_html_node( document = nil, view_rendering_empty = @«view_rendering_empty )
+	def to_html_node( document = nil, view_rendering_empty = @«view_rendering_empty» )
 
 		html_node = nil
 		
-		if permits_multiple? and «view_count > 1
+		if permits_multiple? and «view_count» > 1
 		  
 		  html_node = ::Nokogiri::XML::NodeSet.new( document )
       each { |this_view| html_node << this_view.to_html_node }
 	    
-	  elsif view = «view
+	  elsif view = «view»
 	    
 	    if view.respond_to?( :to_html_node )
 
@@ -64,7 +64,7 @@ module ::Perspective::BindingTypes::HTMLBindings::InstanceBinding
 	  
   		end
   		
-    elsif value = «value
+    elsif value = «value»
 
       if value.respond_to?( :to_html_node )
 
@@ -75,7 +75,7 @@ module ::Perspective::BindingTypes::HTMLBindings::InstanceBinding
         html_fragment = value.to_html_fragment( view_rendering_empty )
   	    html_node = ::Nokogiri::XML::DocumentFragment.parse( html_fragment )
 
-      elsif render_value = «render_value( value )
+      elsif render_value = «render_value»( value )
 
         html_node = ::Nokogiri::XML::Text.new( render_value, document )
 

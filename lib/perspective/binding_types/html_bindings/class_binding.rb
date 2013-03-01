@@ -4,11 +4,11 @@ module ::Perspective::BindingTypes::HTMLBindings::ClassBinding
 
   include ::Perspective::HTML::View::Configuration
       
-  #############################
-  #  «validate_view_class  #
-  #############################
+  ###########################
+  #  «validate_view_class»  #
+  ###########################
 
-  def «validate_view_class( view_class )
+  def «validate_view_class»( view_class )
     
     unless view_class.method_defined?( :to_html_node )     or 
            view_class.method_defined?( :to_html_fragment )

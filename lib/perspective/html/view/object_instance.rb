@@ -26,16 +26,16 @@ module ::Perspective::HTML::View::ObjectInstance
   def initialize_css
 
     # css_class
-    unless css_class = «css_class or css_class == false
-		  self.«css_class = self.class.to_s
+    unless css_class = «css_class» or css_class == false
+		  self.«css_class» = self.class.to_s
     end
 
     # css_id
-    unless css_id = «css_id or css_id == false
-      if route_string = «route_string
-  	    self.«css_id = route_string.dup
+    unless css_id = «css_id» or css_id == false
+      if route_string = «route_string»
+  	    self.«css_id» = route_string.dup
 	    else
-  	    self.«css_id = '<root>'
+  	    self.«css_id» = '<root>'
       end
     end
     
@@ -43,34 +43,34 @@ module ::Perspective::HTML::View::ObjectInstance
   
   end
 
-  ##########################
-  #  self.«container_tag   #
-  #  self.«container_tag=  #
-  #  «container_tag        #
-  #  «container_tag=       #
-  ##########################
+  ###########################
+  #  self.«container_tag»   #
+  #  self.«container_tag»=  #
+  #  «container_tag»        #
+  #  «container_tag»=       #
+  ###########################
 
-	attr_configuration  :«container_tag
+	attr_configuration  :«container_tag»
 
   ###########################
   #  Default Container Tag  #
   ###########################
   
-  self.«container_tag = :div
+  self.«container_tag» = :div
 
   ########################
   #  self.container_tag  #
   #  container_tag       #
   ########################
 
-  Controller.alias_module_and_instance_methods :container_tag, :«container_tag
+  Controller.alias_module_and_instance_methods :container_tag, :«container_tag»
 
   #########################
   #  self.container_tag=  #
   #  container_tag=       #
   #########################
 
-  Controller.alias_module_and_instance_methods :container_tag=, :«container_tag=
+  Controller.alias_module_and_instance_methods :container_tag=, :«container_tag»=
 
   ##########################
   #  initialize_for_index  #
@@ -78,7 +78,7 @@ module ::Perspective::HTML::View::ObjectInstance
   
   def initialize_for_index( index )
     
-    if css_id = self.«css_id 
+    if css_id = self.«css_id» 
       css_id << ( index + 1 ).to_s
     end
     
@@ -138,7 +138,7 @@ module ::Perspective::HTML::View::ObjectInstance
   #  to_html_fragment  #
   ######################
 
-  def to_html_fragment( view_rendering_empty = @«view_rendering_empty )
+  def to_html_fragment( view_rendering_empty = @«view_rendering_empty» )
     
     return to_html_node( nil, view_rendering_empty ).to_s
 
@@ -148,12 +148,12 @@ module ::Perspective::HTML::View::ObjectInstance
   #  to_html_node  #
   ##################
 
-  def to_html_node( document = nil, view_rendering_empty = @«view_rendering_empty )
+  def to_html_node( document = nil, view_rendering_empty = @«view_rendering_empty» )
 		
     ensure_binding_order_declared!
     
 		# if we have an attribute order defined that means we have child elements
-		nodes_from_self = «render_binding_order( document, view_rendering_empty )
+		nodes_from_self = «render_binding_order»( document, view_rendering_empty )
     
     # if we weren't passed a document, we created it and are responsible for the root node
     document.root = nodes_from_self if document
@@ -166,24 +166,24 @@ module ::Perspective::HTML::View::ObjectInstance
       private ######################################################################################
   ##################################################################################################
 
-  ################################
-  #  «initialize_container_node  #
-  ################################
+  #################################
+  #  «initialize_container_node»  #
+  #################################
   
-  def «initialize_container_node( document = nil )
+  def «initialize_container_node»( document = nil )
     
     container_node = nil
     
     # If we don't have a container tag, create contents as set of nodes
-    if container_tag = «container_tag
+    if container_tag = «container_tag»
 
       container_node = ::Nokogiri::XML::Node.new( container_tag.to_s, document )
 
-      if css_class = «css_class
+      if css_class = «css_class»
   		  container_node[ 'class' ] = css_class.to_s	    
       end
 
-      if css_id = «css_id
+      if css_id = «css_id»
         container_node[ 'id' ] = css_id.to_s
       end
 
@@ -197,19 +197,19 @@ module ::Perspective::HTML::View::ObjectInstance
     
   end
   	
-	###########################
-  #  «render_binding_order  #
-  ###########################
+	############################
+  #  «render_binding_order»  #
+  ############################
   
-	def «render_binding_order( document = nil, view_rendering_empty = @«view_rendering_empty )
+	def «render_binding_order»( document = nil, view_rendering_empty = @«view_rendering_empty» )
 
     ensure_required_bindings_present! unless view_rendering_empty
 
 		# Create our container node (self)
 		# This is most likely either a Div or a NodeSet, but could be anything.
-    container_node = «initialize_container_node( document )
+    container_node = «initialize_container_node»( document )
 
-		«binding_order.each do |this_binding|
+		«binding_order».each do |this_binding|
 	    case html_node = this_binding.to_html_node( document, view_rendering_empty )
 	      when nil
 	        # nothing to do
