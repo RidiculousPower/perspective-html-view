@@ -10,7 +10,7 @@ describe ::Perspective::HTML::View do
   let( :bindings_module ) { ::Perspective::HTML::View }
   setup_container_and_bindings_tests  
   
-#  it_behaves_like :container_and_bindings
+  it_behaves_like :container_and_bindings
 
   describe ::Perspective::BindingTypes::HTMLBindings::ClassBinding do
 
@@ -131,7 +131,7 @@ describe ::Perspective::HTML::View do
 
   context '#«container_tag»' do
     it 'tracks a container tag' do
-      instance_of_class.«container_tag».should == 'div'
+      instance_of_class.«container_tag».should == :div
     end
   end
 
@@ -167,26 +167,77 @@ describe ::Perspective::HTML::View do
       ::Perspective::HTML::View.instance_method( :container_tag= ).should == ::Perspective::HTML::View.instance_method( :«container_tag»= )
     end
   end
-
-  #############
-  #  to_html  #
-  #############
-
-  context '#to_html' do
-  end
   
-  ######################
-  #  to_html_fragment  #
-  ######################
+  context '==============  Rendering  ==============' do
 
-  context '#to_html_fragment' do
-  end
+    let( :content_value ) { :some_content_value }
+    let( :binding_one_value ) { :some_binding_one_value }
+    let( :binding_two_value ) { :some_binding_two_value }
+    let( :c_content_value ) { :some_c_content_value }
+    let( :html_instance ) do
+      class_instance.attr_order :content, :a
+      class_instance.css_class = :instance
+      class_instance.a.attr_order :b
+      class_instance.a.css_class = class_instance.a.container_class.name
+      class_instance.a.b.attr_order :c
+      class_instance.a.b.css_class = class_instance.a.b.container_class.name
+      class_instance.a.b.c.attr_order :content
+      class_instance.a.b.c.css_class = class_instance.a.b.c.container_class.name
+      instance_of_class.content = content_value
+      instance_of_class.binding_one = binding_one_value
+      instance_of_class.binding_two = binding_two_value
+      instance_of_class.a.b.c.content = c_content_value
+      instance_of_class
+    end
+    
+    ##################
+    #  to_html_node  #
+    ##################
 
-  ##################
-  #  to_html_node  #
-  ##################
+    context '#to_html_node' do
+      let( :html_node ) { html_instance.to_html_node }
+      it 'will output an HTML node reflecting its binding/container structure' do
+        html_node.name.should == instance_of_class.«container_tag».to_s
+        html_node.children[0].name.should == 'text'
+        html_node.children[0].content.should == instance_of_class.content.to_s
+        html_node.children[1].name.should == instance_of_class.a.«container_tag».to_s
+        html_node.children[1].children[0].name.should == instance_of_class.a.b.«container_tag».to_s
+        html_node.children[1].children[0].children[0].name.should == instance_of_class.a.b.c.«container_tag».to_s
+        html_node.children[1].children[0].children[0].content.should == instance_of_class.a.b.c.content.to_s
+      end
+    end
+  
+    ######################
+    #  to_html_fragment  #
+    ######################
 
-  context '#to_html_node' do
+    context '#to_html_fragment' do
+      let( :html_node ) { html_instance.to_html_fragment }
+      it 'will output HTML reflecting its binding/container structure' do
+        html_node.should == '<div class="instance" id="[root]">some_content_value<div class="NestedClass_A" id="a"><div class="NestedClass_A_B" id="a::b"><div class="NestedClass_A_B_C" id="a::b::c">some_c_content_value</div></div></div></div>'
+      end
+    end
+
+    #############
+    #  to_html  #
+    #############
+
+    context '#to_html' do
+      let( :html_node ) { html_instance.to_html }
+      it 'will output a well-formed HTML5 document reflecting its binding/container structure' do
+        html_node.should == '<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+	<body>
+		<div class="instance" id="[root]">some_content_value<div class="NestedClass_A" id="a"><div class="NestedClass_A_B" id="a::b"><div class="NestedClass_A_B_C" id="a::b::c">some_c_content_value</div></div></div></div>
+	</body>
+</html>
+'
+      end
+    end
+  
   end
   
 end

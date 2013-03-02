@@ -3,6 +3,7 @@
 module ::Perspective::BindingTypes::HTMLBindings::InstanceBinding
 
   include ::Perspective::HTML::View::Configuration
+  include ::Perspective::HTML::View::ObjectInstanceAndBindingInstance
 
   ################
   #  initialize  #
@@ -40,7 +41,7 @@ module ::Perspective::BindingTypes::HTMLBindings::InstanceBinding
   #  to_html_node  #
   ##################
   
-	def to_html_node( document = nil, view_rendering_empty = @«view_rendering_empty» )
+	def to_html_node( document = «initialize_document», view_rendering_empty = @«view_rendering_empty» )
 
 		html_node = nil
 		

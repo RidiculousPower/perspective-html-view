@@ -10,18 +10,15 @@ files = [
   'view/configuration',
   
   '../binding_types/html',
+
+  'view/object_instance_and_instance_binding',
   
   '../binding_types/html_bindings/class_binding',
   '../binding_types/html_bindings/instance_binding',
   '../binding_types/html_bindings/view/instance_binding',
   
   'view/singleton_instance',
-  'view/object_instance',
-
-  'view/nokogiri/initialize_document',
-  '../../../lib_ext/nokogiri/xml/node',
-  '../../../lib_ext/nokogiri/xml/node_set'
-
+  'view/object_instance'
   
 ]
 
