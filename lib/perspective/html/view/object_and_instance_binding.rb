@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 
-module ::Perspective::HTML::View::ObjectInstanceAndBindingInstance
+module ::Perspective::HTML::View::ObjectAndBindingInstance
 
   ###########################
   #  «initialize_document»  #

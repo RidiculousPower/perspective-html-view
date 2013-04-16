@@ -5,15 +5,15 @@ module ::Perspective::HTML::View::ObjectInstance
   include ::Perspective::HTML::View::Configuration
   include ::Perspective::View::ObjectInstance
   
-  include ::Perspective::HTML::View::ObjectInstanceAndBindingInstance
+  include ::Perspective::HTML::View::ObjectAndBindingInstance
   
   include ::CascadingConfiguration::Setting
   
-  #########################
-  #  initialize_instance  #
-  #########################
+  ###########################
+  #  «initialize_instance»  #
+  ###########################
 
-  def initialize_instance
+  def «initialize_instance»
     
     super
     
@@ -145,10 +145,6 @@ module ::Perspective::HTML::View::ObjectInstance
     
   end
   
-  ##################################################################################################
-      private ######################################################################################
-  ##################################################################################################
-  
   #################################
   #  «initialize_container_node»  #
   #################################
@@ -156,8 +152,6 @@ module ::Perspective::HTML::View::ObjectInstance
   def «initialize_container_node»( document = «initialize_document» )
     
     container_node = nil
-    
-    raise 'wtf' if document.nil?
       
     if container_tag = «container_tag»
       container_node = ::Nokogiri::XML::Node.new( container_tag.to_s, document )
@@ -189,16 +183,20 @@ module ::Perspective::HTML::View::ObjectInstance
     container_node = «initialize_container_node»( document )
 
 		«binding_order».each do |this_binding|
-	    case html_node = this_binding.to_html_node( document, view_rendering_empty )
-	      when nil
-	        # nothing to do
-	      when ::Nokogiri::XML::NodeSet
-          html_node.each { |this_html_node| container_node << this_html_node }
-        else
-  		    container_node << html_node
-	    end
+		  if this_binding.respond_to?( :to_html_node )
+  	    case html_node = this_binding.to_html_node( document, view_rendering_empty )
+  	      when nil
+  	        # nothing to do
+  	      when ::Nokogiri::XML::NodeSet
+            html_node.each { |this_html_node| container_node << this_html_node }
+          else
+    		    container_node << html_node
+  	    end
+	    else
+	      container_node << ::Nokogiri::XML::Text.new( this_binding.«value».to_s, document )
+      end
 		end
-		
+
     return container_node
     
 	end

@@ -3,7 +3,7 @@
 module ::Perspective::BindingTypes::HTMLBindings::InstanceBinding
 
   include ::Perspective::HTML::View::Configuration
-  include ::Perspective::HTML::View::ObjectInstanceAndBindingInstance
+  include ::Perspective::HTML::View::ObjectAndBindingInstance
 
   ################
   #  initialize  #
@@ -83,7 +83,7 @@ module ::Perspective::BindingTypes::HTMLBindings::InstanceBinding
     	end
 	    
     end
-		
+
 		return html_node
 
 	end

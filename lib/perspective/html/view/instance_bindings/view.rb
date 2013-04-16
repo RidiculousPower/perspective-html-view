@@ -1,8 +1,8 @@
 # -*- encoding : utf-8 -*-
 
-module ::Perspective::HTML::View::BindingDefinitions::View
+module ::Perspective::HTML::View::InstanceBindings::View
 
-  include ::Perspective::View::BindingDefinitions::View
+  include ::Perspective::View::InstanceBindings::View
   
   ##########################
   #  binding_value_valid?  #

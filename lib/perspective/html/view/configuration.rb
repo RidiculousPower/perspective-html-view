@@ -13,9 +13,9 @@ module ::Perspective::HTML::View::Configuration
 
 	attr_configuration  :«container_tag»
 
-  ###########################
-  #  Default Container Tag  #
-  ###########################
+  #############################
+  #  «container_tag» Default  #
+  #############################
   
   self.«container_tag» = :div
 

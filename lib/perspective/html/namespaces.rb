@@ -4,7 +4,7 @@ module ::Perspective::HTML
   module Output
   end
   module View
-    module BindingDefinitions
+    module InstanceBindings
     end
   end
 end

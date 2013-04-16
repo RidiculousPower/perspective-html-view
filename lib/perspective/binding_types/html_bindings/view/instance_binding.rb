@@ -2,6 +2,6 @@
 
 class ::Perspective::BindingTypes::HTMLBindings::View::InstanceBinding
   
-  include ::Perspective::HTML::View::BindingDefinitions::View
+  include ::Perspective::HTML::View::InstanceBindings::View
   
 end

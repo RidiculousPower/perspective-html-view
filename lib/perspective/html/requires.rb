@@ -5,13 +5,13 @@ require 'nokogiri'
 
 files = [
 
-  'view/binding_definitions/view',
+  'view/instance_bindings/view',
 
   'view/configuration',
   
   '../binding_types/html',
 
-  'view/object_instance_and_instance_binding',
+  'view/object_and_instance_binding',
   
   '../binding_types/html_bindings/class_binding',
   '../binding_types/html_bindings/instance_binding',
