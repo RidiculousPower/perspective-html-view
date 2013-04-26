@@ -24,14 +24,14 @@ module ::Perspective::HTML::View::Configuration
   #  container_tag       #
   ########################
 
-  Controller.alias_module_and_instance_methods :container_tag, :«container_tag»
+  self::Controller.alias_module_and_instance_methods :container_tag, :«container_tag»
 
   #########################
   #  self.container_tag=  #
   #  container_tag=       #
   #########################
 
-  Controller.alias_module_and_instance_methods :container_tag=, :«container_tag»=
+  self::Controller.alias_module_and_instance_methods :container_tag=, :«container_tag»=
 
   ###############
   #  «css_id»   #
@@ -44,13 +44,13 @@ module ::Perspective::HTML::View::Configuration
   #  css_id  #
   ############
 
-  Controller.alias_module_and_instance_methods :css_id, :«css_id»
+  self::Controller.alias_module_and_instance_methods :css_id, :«css_id»
 
   #############
   #  css_id=  #
   #############
 
-  Controller.alias_module_and_instance_methods :css_id=, :«css_id»=
+  self::Controller.alias_module_and_instance_methods :css_id=, :«css_id»=
 	
   ##################
   #  «css_class»   #
@@ -63,12 +63,12 @@ module ::Perspective::HTML::View::Configuration
   #  css_class  #
   ###############
   
-  Controller.alias_module_and_instance_methods :css_class, :«css_class»
+  self::Controller.alias_module_and_instance_methods :css_class, :«css_class»
   
   ################
   #  css_class=  #
   ################
   
-  Controller.alias_module_and_instance_methods :css_class=, :«css_class»=
+  self::Controller.alias_module_and_instance_methods :css_class=, :«css_class»=
   
 end

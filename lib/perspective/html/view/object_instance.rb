@@ -10,10 +10,10 @@ module ::Perspective::HTML::View::ObjectInstance
   include ::CascadingConfiguration::Setting
   
   ###########################
-  #  «initialize_instance»  #
+  #  initialize«container_instance»  #
   ###########################
 
-  def «initialize_instance»
+  def initialize«container_instance»( *args, & block )
     
     super
     
@@ -46,10 +46,10 @@ module ::Perspective::HTML::View::ObjectInstance
   end
 
   ##########################
-  #  initialize_for_index  #
+  #  initialize«for_index»  #
   ##########################
   
-  def initialize_for_index( index )
+  def initialize«for_index»( index )
     
     if css_id = self.«css_id» 
       css_id << ( index + 1 ).to_s

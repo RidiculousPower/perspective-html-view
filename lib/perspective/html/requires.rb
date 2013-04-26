@@ -3,7 +3,7 @@
 # we are using nokogiri for now, but that may change
 require 'nokogiri'
 
-files = [
+[
 
   'view/instance_bindings/view',
 
@@ -20,6 +20,4 @@ files = [
   'view/singleton_instance',
   'view/object_instance'
   
-]
-
-files.each { |this_file| require_relative( this_file << '.rb' ) }
+].each { |this_file| require_relative( this_file << '.rb' ) }
