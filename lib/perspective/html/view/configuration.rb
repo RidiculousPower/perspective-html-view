@@ -2,7 +2,7 @@
 
 module ::Perspective::HTML::View::Configuration
 
-  include ::CascadingConfiguration::Setting
+  extend ::CascadingConfiguration::Setting
   
   ###########################
   #  self.«container_tag»   #
@@ -24,14 +24,14 @@ module ::Perspective::HTML::View::Configuration
   #  container_tag       #
   ########################
 
-  self::Controller.alias_module_and_instance_methods :container_tag, :«container_tag»
+  alias_method :container_tag, :«container_tag»
 
   #########################
   #  self.container_tag=  #
   #  container_tag=       #
   #########################
 
-  self::Controller.alias_module_and_instance_methods :container_tag=, :«container_tag»=
+  alias_method :container_tag=, :«container_tag»=
 
   ###############
   #  «css_id»   #
@@ -44,13 +44,13 @@ module ::Perspective::HTML::View::Configuration
   #  css_id  #
   ############
 
-  self::Controller.alias_module_and_instance_methods :css_id, :«css_id»
+  alias_method :css_id, :«css_id»
 
   #############
   #  css_id=  #
   #############
 
-  self::Controller.alias_module_and_instance_methods :css_id=, :«css_id»=
+  alias_method :css_id=, :«css_id»=
 	
   ##################
   #  «css_class»   #
@@ -63,12 +63,12 @@ module ::Perspective::HTML::View::Configuration
   #  css_class  #
   ###############
   
-  self::Controller.alias_module_and_instance_methods :css_class, :«css_class»
+  alias_method :css_class, :«css_class»
   
   ################
   #  css_class=  #
   ################
   
-  self::Controller.alias_module_and_instance_methods :css_class=, :«css_class»=
+  alias_method :css_class=, :«css_class»=
   
 end

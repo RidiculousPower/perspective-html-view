@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
 
-module ::Perspective::BindingTypes::HTMLBindings
+module ::Perspective::BindingTypes::HTMLViewBindings
   
 end

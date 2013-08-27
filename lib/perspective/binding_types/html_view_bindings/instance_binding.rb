@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 
-module ::Perspective::BindingTypes::HTMLBindings::InstanceBinding
+module ::Perspective::BindingTypes::HTMLViewBindings::InstanceBinding
 
   include ::Perspective::HTML::View::Configuration
   include ::Perspective::HTML::View::ObjectAndBindingInstance

@@ -13,9 +13,9 @@ require 'nokogiri'
 
   'view/object_and_instance_binding',
   
-  '../binding_types/html_bindings/class_binding',
-  '../binding_types/html_bindings/instance_binding',
-  '../binding_types/html_bindings/view/instance_binding',
+  '../binding_types/html_view_bindings/class_binding',
+  '../binding_types/html_view_bindings/instance_binding',
+  '../binding_types/html_view_bindings/view/instance_binding',
   
   'view/singleton_instance',
   'view/object_instance'

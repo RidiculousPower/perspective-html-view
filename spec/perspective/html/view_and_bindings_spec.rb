@@ -12,7 +12,7 @@ describe ::Perspective::HTML::View do
   
   it_behaves_like :container_and_bindings
 
-  describe ::Perspective::BindingTypes::HTMLBindings::ClassBinding do
+  describe ::Perspective::BindingTypes::HTMLViewBindings::ClassBinding do
 
     ###########################
     #  «validate_view_class»  #
@@ -46,7 +46,7 @@ describe ::Perspective::HTML::View do
 
   end
 
-  describe ::Perspective::BindingTypes::HTMLBindings::InstanceBinding do
+  describe ::Perspective::BindingTypes::HTMLViewBindings::InstanceBinding do
   
     ####################
     #  initialize_css  #
@@ -215,8 +215,8 @@ describe ::Perspective::HTML::View do
 
     context '#to_html_fragment' do
       let( :html_node ) { html_instance.to_html_fragment }
-      it 'will output HTML reflecting its binding/container structure' do
-        html_node.should == '<div class="instance" id="[root]">some_content_value<div class="Perspective::HTML::View::Test::NestedClass_A" id="a"><div class="Perspective::HTML::View::Test::NestedClass_A_B" id="a::b"><div class="Perspective::HTML::View::Test::NestedClass_A_B_C" id="a::b::c">some_c_content_value</div></div></div></div>'
+      it 'will output HTML reflecting its binding/container structure (does not use full constant name for class because tests have specified name)' do
+        html_node.should == '<div class="instance" id="[root]">some_content_value<div class="NestedClass_A" id="a"><div class="NestedClass_A_B" id="a::b"><div class="NestedClass_A_B_C" id="a::b::c">some_c_content_value</div></div></div></div>'
       end
     end
 
@@ -226,14 +226,14 @@ describe ::Perspective::HTML::View do
 
     context '#to_html' do
       let( :html_node ) { html_instance.to_html }
-      it 'will output a well-formed HTML5 document reflecting its binding/container structure' do
+      it 'will output a well-formed HTML5 document reflecting its binding/container structure  (does not use full constant name for class because tests have specified name)' do
         html_node.should == '<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 	<body>
-		<div class="instance" id="[root]">some_content_value<div class="Perspective::HTML::View::Test::NestedClass_A" id="a"><div class="Perspective::HTML::View::Test::NestedClass_A_B" id="a::b"><div class="Perspective::HTML::View::Test::NestedClass_A_B_C" id="a::b::c">some_c_content_value</div></div></div></div>
+		<div class="instance" id="[root]">some_content_value<div class="NestedClass_A" id="a"><div class="NestedClass_A_B" id="a::b"><div class="NestedClass_A_B_C" id="a::b::c">some_c_content_value</div></div></div></div>
 	</body>
 </html>
 '

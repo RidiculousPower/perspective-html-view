@@ -7,11 +7,11 @@ module ::Perspective::HTML::View::ObjectInstance
   
   include ::Perspective::HTML::View::ObjectAndBindingInstance
   
-  include ::CascadingConfiguration::Setting
+  extend ::CascadingConfiguration::Setting
   
-  ###########################
+  ####################################
   #  initialize«container_instance»  #
-  ###########################
+  ####################################
 
   def initialize«container_instance»( *args, & block )
     

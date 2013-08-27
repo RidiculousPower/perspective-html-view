@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 
-module ::Perspective::BindingTypes::HTMLBindings::ClassBinding
+module ::Perspective::BindingTypes::HTMLViewBindings::ClassBinding
 
   include ::Perspective::HTML::View::Configuration
       
